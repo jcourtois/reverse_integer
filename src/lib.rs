@@ -8,8 +8,24 @@ impl Solution {
         let reversed = x.abs().to_string().bytes().rev().collect();
         match String::from_utf8(reversed).unwrap().parse::<i32>() {
             Ok(num) => sign * num,
-            Err(_) => 0
+            Err(_) => 0,
         }
+    }
+
+    #[cfg(test)]
+    pub fn reverse2(x: i32) -> i32 {
+        let sign = x.signum();
+        let mut n = x.abs();
+        let mut ans = Some(0);
+        let mut temp;
+        while n > 0 {
+            temp = n % 10;
+            ans = ans
+                .and_then(|x: i32| x.checked_mul(10i32))
+                .and_then(|x: i32| x.checked_add(temp));
+            n /= 10;
+        }
+        ans.map_or(0, |x| x * sign)
     }
 }
 
